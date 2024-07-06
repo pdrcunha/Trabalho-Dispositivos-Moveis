@@ -1,39 +1,16 @@
-# lorenaApp
+# Caixa APP (Em desenvolvimento)
 
-This template should help get you started developing with Vue 3 in Vite.
+Aplicativo para auxiliar o controle de caixa e clientes;
 
-## Recommended IDE Setup
+## Motivação
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+Trabalho de extensão (Programação Para Dispositivos Móveis em Android)
 
-## Type Support for `.vue` Imports in TS
+## Tecnologias
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vitejs.dev/config/).
-
-## Project Setup
-
-```sh
-npm install
-```
-
-### Compile and Hot-Reload for Development
-
-```sh
-npm run dev
-```
-
-### Type-Check, Compile and Minify for Production
-
-```sh
-npm run build
-```
-
-### Run Unit Tests with [Vitest](https://vitest.dev/)
-
-```sh
-npm run test:unit
-```
+- Ts;
+- Vue;
+- Tailwind css;
+- Prime Vue (Component Lib);
+- Pinia;
+- Vue Router;
