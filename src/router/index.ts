@@ -11,7 +11,7 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      component: LoginView
+      component: LoginView,
     },
     {
       path: '/:pathMatch(.*)*', // Captura todas as rotas não definidas

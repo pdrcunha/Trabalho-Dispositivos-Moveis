@@ -24,6 +24,7 @@ import Button from 'primevue/button';
 
 const userInfraStore = UserInfraStore()
 onMounted(async ()=>{
+    document.title = 'Clientes';
     const users = await userInfraStore.getAllUsers();
     userInfraStore.allUsers = users;
 });

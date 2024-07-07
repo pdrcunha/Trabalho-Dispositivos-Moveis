@@ -23,6 +23,7 @@ import { CaixaInfraStore } from '@/stores/CaixaInfraStore';
 const caixaInfraStore = CaixaInfraStore();
 
 onMounted(async ()=>{
+    document.title = 'Caixa';
     const caixas = await caixaInfraStore.getAllCaixas();
     caixaInfraStore.allCaixas = caixas;
 });
