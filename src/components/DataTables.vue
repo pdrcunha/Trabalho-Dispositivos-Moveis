@@ -3,7 +3,10 @@
         filterDisplay="menu">
         <template #header>
             <div class="flex justify-between">
-                <Button type="button" icon="pi pi-filter-slash" outlined @click="clearFilter()" />
+                <div class="flex gap-3">
+                    <slot name="button"></slot>
+                    <Button type="button" icon="pi pi-filter-slash" outlined @click="clearFilter()" />
+                </div>
                 <span class="relative">
                     <i class="pi pi-search absolute top-2/4 -mt-2 left-3 text-surface-400 dark:text-surface-600" />
                     <InputText v-model="filters['global'].value" placeholder="Pesquise" class="pl-10 font-normal" />

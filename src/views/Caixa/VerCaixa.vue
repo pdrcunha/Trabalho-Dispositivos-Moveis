@@ -1,54 +1,33 @@
 <template>
   <BaseModal header="Ver Caixa" :visible="caixaInfraStore.visibleViewCaixa" :closeFn="() => caixaInfraStore.closeModal('view')">
-    <h1>id:{{ form.id }}</h1>
-    <div class="form-group">
-      <label for="name" class="block text-sm font-medium">Nome</label>
-      <InputText disabled id="name" v-model="form.name" type="text" class="mt-1 block w-full" placeholder="Nome" />
-    </div>
-    <div class="form-group">
-      <label for="email" class="block text-sm font-medium">Email</label>
-      <InputText disabled id="email" v-model="form.email" type="email" class="mt-1 block w-full" placeholder="Email" />
-    </div>
-    <div class="form-group">
-      <label for="telefone" class="block text-sm font-medium">Telefone</label>
-      <InputText disabled id="telefone" v-model="form.telefone" type="text" class="mt-1 block w-full" placeholder="Telefone" />
-    </div>
-    <div class="form-group">
-      <label for="endereco" class="block text-sm font-medium">Endereço</label>
-      <InputText disabled id="endereco" v-model="form.endereco" type="text" class="mt-1 block w-full" placeholder="Endereço" />
-    </div>
-    <div class="form-group col-span-2">
-      <label for="status" class="block text-sm font-medium">Status</label>
-      <InputText disabled id="status" v-model="form.status" type="text" class="mt-1 block w-full" placeholder="Status" />
-    </div>
+    <InputBase for="Descricao" name="Descrição">
+      <InputText disabled id="Descricao" v-model="form.descricao" type="text" class="mt-1 block w-full" />
+    </InputBase>
+    <InputBase for="tipo" name="Tipo">
+      <InputText disabled id="tipo" v-model="form.tipo" type="text" class="mt-1 block w-full" />
+    </InputBase>
+    <InputBase for="cliente" name="Cliente">
+      <InputText disabled id="cliente" v-model="form.cliente" type="text" class="mt-1 block w-full" />
+    </InputBase>
+    <InputBase for="valor" name="Valor">
+      <InputText disabled id="valor" v-model="form.valor" type="text" class="mt-1 block w-full" />
+    </InputBase>
+    <InputBase for="numero_nota" name="Numero Nota">
+      <InputText disabled id="numero_nota" v-model="form.numero_nota" type="text" class="mt-1 block w-full" />
+    </InputBase>
   </BaseModal>
 </template>
 
 <script setup>
-import { ref, watch } from 'vue';
+
 import BaseModal from '@/components/BaseModal.vue';
 import InputText from 'primevue/inputtext';
 import { CaixaInfraStore } from '@/stores/CaixaInfraStore';
+import { computed } from 'vue';
+import InputBase from '@/components/InputBase.vue';
 
 const caixaInfraStore = CaixaInfraStore();
-
-const form = ref({
-  id: '',
-  name: '',
-  email: '',
-  telefone: '',
-  endereco: '',
-  status: ''
-});
-
-const props = defineProps({
-  idUser: {
-    required: true
-  }
-});
+const form = computed(() => caixaInfraStore.actualCaixa); 
 
 
-watch(() => props.idUser, async (newId) => {
-  form.value = await caixaInfraStore.getCaixa(newId);
-});
 </script>

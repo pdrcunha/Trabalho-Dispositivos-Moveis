@@ -1,10 +1,14 @@
 <template>
     <AppTemplate title="Controle de Clientes">
-       
-        <DataTables :columns="columns" :data="userInfraStore.allUsers" :generateActionItems="generateActionItems" actionColumn />
-        <VerCliente :idUser="userIdview" ></VerCliente>
-        <EditarCliente :idUser="viewIdEdit" ></EditarCliente>
-        <CadastrarCliente :visible="userInfraStore.visibleCreateUser"></CadastrarCliente>
+        <DataTables :columns="columns" :data="userInfraStore.allUsers" :generateActionItems="generateActionItems"
+            actionColumn>
+            <template #button>
+                <Button icon="pi pi-plus" outlined @click="createUser"></Button>
+            </template>
+        </DataTables>
+        <VerCliente ></VerCliente>
+        <EditarCliente ></EditarCliente>
+        <CadastrarCliente></CadastrarCliente>
     </AppTemplate>
 </template>
 
@@ -22,8 +26,10 @@ import CadastrarCliente from './CadastrarCliente.vue';
 import { UserInfraStore } from '@/stores/UserInfraStore';
 import Button from 'primevue/button';
 
+
 const userInfraStore = UserInfraStore()
-onMounted(async ()=>{
+
+onMounted(async () => {
     document.title = 'Clientes';
     const users = await userInfraStore.getAllUsers();
     userInfraStore.allUsers = users;
@@ -70,19 +76,19 @@ const viewIdEdit = ref(null);
 const generateActionItems = (id) => {
     return [
         {
-            label: `Ver ${id}`,
+            label: `Ver`,
             icon: 'pi pi-search',
             command: () => verCliente(id)
         },
         {
-            label: `Editar ${id}`,
+            label: `Editar`,
             icon: 'pi pi-file-edit',
             command: () => editCliente(id)
         },
         {
-            label: `Excluir ${id}`,
+            label: `Excluir`,
             icon: 'pi pi-trash',
-            command: () => alert(`Excluir item ${id}`)
+            command: () => excluirCliente(id)
         }
     ];
 };
@@ -93,13 +99,20 @@ const verCliente = (id) => {
 
 };
 
-const editCliente = (id) => {
+const editCliente = async(id) => {
+    await userInfraStore.getUser(id);
     userInfraStore.openModal('edit');
-    viewIdEdit.value = id;
+
 }
 
-const createUser = (id) => {
+const createUser = (id) => {   
     userInfraStore.openModal('create');
+}
+
+const excluirCliente = async (id) => {
+    await userInfraStore.deleteUser(id);
+    const caixas = await userInfraStore.getAllUsers();
+    userInfraStore.allUsers = caixas;
 }
 
 </script>

@@ -1,9 +1,13 @@
 <template>
     <AppTemplate title="Pagar e receber">
-        <DataTables :columns="columns" :data="caixaInfraStore.allCaixas" :generateActionItems="generateActionItems" actionColumn />
-        <VerCaixa :idUser="caixaIdview" />
-        <EditarCaixa :idUser="viewIdEdit" />
-        <CadastrarCaixa :visible="caixaInfraStore.visibleCreateCaixa"/>
+        <DataTables :columns="columns" :data="caixaInfraStore.allCaixas" :generateActionItems="generateActionItems" actionColumn >
+            <template #button>
+                <Button icon="pi pi-plus" outlined @click="createCaixa"></Button>
+            </template>
+        </DataTables> 
+        <VerCaixa />
+        <EditarCaixa />
+        <CadastrarCaixa />
     </AppTemplate>
 </template>
 
@@ -19,6 +23,7 @@ import VerCaixa from "./VerCaixa.vue";
 import EditarCaixa from "./EditarCaixa.vue";
 import CadastrarCaixa from './CadastrarCaixa.vue';
 import { CaixaInfraStore } from '@/stores/CaixaInfraStore';
+import Button from 'primevue/button';
 
 const caixaInfraStore = CaixaInfraStore();
 
@@ -55,7 +60,7 @@ const columns = [
         filterMatchMode: FilterMatchMode.DATE_IS
     },
     {
-        field: 'numeroNota',
+        field: 'numero_nota',
         header: 'Numero da nota',
         filterComponent: InputNumber,
         filter: true,
@@ -63,40 +68,44 @@ const columns = [
     }
 ];
 
-const caixaIdview = ref(null);
-const viewIdEdit = ref(null);
 
 const generateActionItems = (id) => {
     return [
         {
-            label: `Ver ${id}`,
+            label: `Ver`,
             icon: 'pi pi-search',
             command: () => verCaixa(id)
         },
         {
-            label: `Editar ${id}`,
+            label: `Editar`,
             icon: 'pi pi-file-edit',
             command: () => editarCaixa(id)
         },
         {
-            label: `Excluir ${id}`,
+            label: `Excluir`,
             icon: 'pi pi-trash',
-            command: () => alert(`Excluir item ${id}`)
+            command: () => excluirCaixa(id)
         }
     ];
 };
 
-const verCaixa = (id) => {
+const verCaixa = async (id) => {
+    await caixaInfraStore.getCaixa(id);
     caixaInfraStore.openModal('view');
-    caixaIdview.value = id;
 };
 
-const editarCaixa = (id) => {
+const editarCaixa = async (id) => {
+    await caixaInfraStore.getCaixa(id);
     caixaInfraStore.openModal('edit');
-    viewIdEdit.value = id;
 }
 
-const createCaixa = (id) => {
+const excluirCaixa = async (id) => {
+    await caixaInfraStore.deleteCaixa(id);
+    const caixas = await caixaInfraStore.getAllCaixas();
+    caixaInfraStore.allCaixas = caixas;
+}
+
+const createCaixa = () => {
     caixaInfraStore.openModal('create');
 }
 

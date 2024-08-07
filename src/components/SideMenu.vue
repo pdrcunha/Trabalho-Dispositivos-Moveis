@@ -7,7 +7,7 @@
           <RouterLink v-for="link in items" :to="link.link">
             <Button :label="link.label" :icon="link.icon" class="w-full" text />
           </RouterLink>
-          <Button label="Sair" icon="pi pi-sign-out" class="w-full" text severity="danger" />
+          <Button label="Sair" icon="pi pi-sign-out" class="w-full" text severity="danger" @click="logOut"/>
         </div>
       </div>
     </Sidebar>
@@ -20,6 +20,8 @@ import { ref } from "vue";
 import Sidebar from 'primevue/sidebar';
 import Button from 'primevue/button';
 import { RouterLink } from "vue-router";
+import { useProfileStore } from "@/stores/useProfileStore";
+import router from "@/router";
 
 const visible = ref(false);
 const items = ref([
@@ -27,4 +29,13 @@ const items = ref([
   { label: 'Clientes', icon: 'pi pi-user', link:"/clientes"},
   { label: 'Caixa', icon: 'pi pi-shopping-cart', link:"/caixa"},
 ]);
+const userInfraStore = useProfileStore();
+
+
+const logOut = () =>{
+  userInfraStore.clearToken();
+  router.push({ name: 'home' });
+}
 </script>
+
+

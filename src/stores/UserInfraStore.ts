@@ -1,12 +1,18 @@
 import { ref, type Ref } from 'vue'
 import { defineStore } from 'pinia'
+import type { PostUser, User } from '@/entity/User';
+import apiClient from '@/https/axiosConfig';
+import { useToast } from 'primevue/usetoast';
 
 
 export const UserInfraStore = defineStore('UserInfra', () => {
   const visibleCreateUser = ref(false);
   const visibleViewUser = ref(false);
   const visibleEditUser = ref(false);
+  const actualUser = ref(null);
   const allUsers = ref([]);
+
+  const toast = useToast();
 
   const visibilityMap: Record<string, Ref> = {
     view: visibleViewUser,
@@ -22,60 +28,68 @@ export const UserInfraStore = defineStore('UserInfra', () => {
     visibilityMap[type].value = false;
   }
 
-  const postUser = async (usr: User): Promise<boolean> => {
-    return true;
+  const postUser = async (usr: PostUser): Promise<boolean> => {
+    try {
+      const response = await apiClient.post('usuarios', usr);
+      toast.add({ severity: 'success', summary: 'success', detail: 'Usuários Cadastrado.', life: 3000 });
+      return true;
+    } catch (error) {
+      console.error('Erro ao fazer o POST para /usuarios:', error);
+      return false
+    }
   }
 
-  const updateUser = async (usr: User): Promise<boolean> => {
-    return true;
+  const updateUser = async (id:number, usr: User): Promise<boolean> => {
+    try {
+      const response = await apiClient.put('usuarios/'+id, usr);
+      toast.add({ severity: 'success', summary: 'success', detail: 'Usuários Atualizado.', life: 3000 });
+      return response.data; // Retorna apenas os dados (response.data)
+    } catch (error) {
+      console.error('Erro ao fazer o PUT para /usuarios:', error);
+      throw error; // Lança o erro para tratamento externo, se necessário
+    }
   }
 
   const getAllUsers = async (id: number): Promise<Array<User>> => {
-    return [
-      {
-        id: 1,
-        name: 'TESTE 1' + Math.random(),
-        email: 'TESTE 1',
-        telefone: 'TESTE 1',
-        endereco: 'TESTE 1',
-        status: true
-      },
-      {
-        id: 2,
-        name: 'TESTE 2',
-        email: 'TESTE 2',
-        telefone: 'TESTE 2',
-        endereco: 'TESTE 2',
-        status: true
-      },
-      {
-        id: 3,
-        name: 'TESTE 3',
-        email: 'TESTE 3',
-        telefone: 'TESTE 3',
-        endereco: 'TESTE 3',
-        status: true
-      },
-    ];
+    try {
+      const response = await apiClient.get('usuarios');
+      return response.data; // Retorna apenas os dados (response.data)
+    } catch (error) {
+      console.error('Erro ao fazer o GET para /usuarios:', error);
+      throw error; // Lança o erro para tratamento externo, se necessário
+    }
   };
 
   const getUser = async (id: number): Promise<User> => {
-    return {
-      id: id,
-      name: 'TESTE'+ id,
-      email: 'TESTE'+ id,
-      telefone: 'TESTE'+ id,
-      endereco: 'TESTE'+ id,
-      status: true
-    };
+    try {
+      const response = await apiClient.get('usuarios/'+id);
+      actualUser.value = response.data     
+      return response.data; // Retorna apenas os dados (response.data)
+    } catch (error) {
+      console.error('Erro ao fazer o GET para /usuarios/:'+id, error);
+      throw error; // Lança o erro para tratamento externo, se necessário
+    }
   };
+
+  const deleteUser = async (id:number): Promise<boolean> => {
+    try {
+      const response = await apiClient.delete('usuarios/'+id);
+      toast.add({ severity: 'success', summary: 'success', detail: 'Usuários Deletado.', life: 3000 });
+      return response.data; // Retorna apenas os dados (response.data)
+    } catch (error) {
+      console.error('Erro ao fazer o PUT para /usuarios:', error);
+      throw error; // Lança o erro para tratamento externo, se necessário
+    }
+  }
 
   return {
     allUsers,
     visibleCreateUser,
     visibleViewUser,
+    actualUser,
     visibleEditUser,
     postUser,
+    deleteUser,
     updateUser,
     openModal,
     closeModal,

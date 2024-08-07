@@ -4,14 +4,20 @@ import ClientesView from '../views/Clientes/ClientesView.vue';
 import CaixaView from '../views/Caixa/CaixaView.vue';
 import ProfileView from '../views/Profile/ProfileView.vue';
 import NotFoundView from '../views/404/NotFoundView.vue';
+import ApiError from '../views/404/ApiError.vue';
 
-const router = createRouter({
+export const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
       path: '/',
       name: 'home',
       component: LoginView,
+    },
+    {
+      path: '/500', // Captura todas as rotas não definidas
+      name: '500',
+      component: ApiError
     },
     {
       path: '/:pathMatch(.*)*', // Captura todas as rotas não definidas

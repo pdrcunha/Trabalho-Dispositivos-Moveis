@@ -12,10 +12,12 @@
             <slot></slot>
         </main>
     </div>
+    <Toast/>
 </template>
 
 <script setup>
 import SideMenu from '@/components/SideMenu.vue';
+import Toast from 'primevue/toast';
 
 const props = defineProps({
     title: {
