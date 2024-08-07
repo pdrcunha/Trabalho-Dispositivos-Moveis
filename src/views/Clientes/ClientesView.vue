@@ -93,10 +93,9 @@ const generateActionItems = (id) => {
     ];
 };
 
-const verCliente = (id) => {
+const verCliente = async (id) => {
+    await userInfraStore.getUser(id);
     userInfraStore.openModal('view');
-    userIdview.value = id;
-
 };
 
 const editCliente = async(id) => {

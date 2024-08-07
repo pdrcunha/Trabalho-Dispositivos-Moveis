@@ -19,22 +19,13 @@
 </template>
 
 <script setup>
-import { ref, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
 import BaseModal from '@/components/BaseModal.vue';
 import InputText from 'primevue/inputtext';
 import { UserInfraStore } from '@/stores/UserInfraStore';
 import InputBase from '@/components/InputBase.vue';
 
 const userInfraStore = UserInfraStore();
-
-const form = ref({
-  id: '',
-  name: '',
-  email: '',
-  telefone: '',
-  endereco: '',
-  status: ''
-});
 
 const props = defineProps({
   idUser: {
@@ -43,7 +34,5 @@ const props = defineProps({
 });
 
 
-watch(() => props.idUser, async (newId) => {
-  form.value = await userInfraStore.getUser(newId);
-});
+const form = computed (() => userInfraStore.actualUser); 
 </script>
